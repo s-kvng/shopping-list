@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useContext  } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ItemsContext } from '../context/ItemsContext';
-import { useContext } from 'react';
-// import useDataFetching from '../hooks/useDataFetching';
 import NavBar from '../components/NavBar/NavBar';
 import ListItem from '../components/ListItem/ListItem';
 
@@ -18,19 +16,21 @@ function ListDetail() {
   let navigate = useNavigate();
   const { listId } = useParams();
 
-  // const [loading, error, data] = useDataFetching(
-  //   'https://my-json-server.typicode.com/PacktPublishing/React-Projects-Second-Edition/items/',
-  // );
+  const { loading , error , items , fetchItems } = useContext(ItemsContext);
 
-  const { loading , error , Items } = useContext(ItemsContext);
+  console.log(items);
+  console.log("length "+ !items.length)
+ 
 
-  const [items, setItems] = useState([]);
-
+  /*The preceding useEffect Hooks call the fetchItems 
+  function when there's a listId
+  present in the URL of the page*/
   useEffect(() => {
-    Items &&
-      listId &&
-      setItems(Items.filter((item) => item.listId === parseInt(listId)));
-  }, [Items, listId]);
+
+    listId && fetchItems(listId);
+
+  }, [fetchItems ,listId ]);
+
 
   return (
     <>
