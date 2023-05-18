@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ItemsContext } from '../context/ItemsContext';
 import NavBar from '../components/NavBar/NavBar';
 import ListItem from '../components/ListItem/ListItem';
+import ListsContext from '../context/ListsContext';
 
 const ListItemWrapper = styled.div`
   display: flex;
@@ -18,8 +19,8 @@ function ListDetail() {
 
   const { loading , error , items , fetchItems } = useContext(ItemsContext);
 
-  console.log(items);
-  console.log("length "+ !items.length)
+
+  const { list , fetchList } = useContext(ListsContext);
  
 
   /*The preceding useEffect Hooks call the fetchItems 
@@ -32,12 +33,20 @@ function ListDetail() {
   }, [fetchItems ,listId ]);
 
 
+
+  useEffect(() => {
+
+    listId && fetchList(listId);
+
+  }, [fetchList , listId])
+
   return (
     <>
       {navigate && (
         <NavBar
           goBack={() => navigate(-1)}
           openForm={() => navigate(`/list/${listId}/new`)}
+          title={list && list.title}
         />
       )}
       <ListItemWrapper>

@@ -36,7 +36,9 @@ const Lists = () => {
   const { loading, error , lists , fetchLists } = useContext(ListsContext);
 
   useEffect(()=>{
+
     !lists.length && fetchLists()
+    
   }, [fetchLists , lists]);
 
   return (
