@@ -17,6 +17,7 @@ const reducer = (state, action) => {
     switch (action.type) {
 
         case 'GET_LISTS_SUCCESS':
+            
             return {
                 ...state,
                 lists: action.payload,
@@ -50,6 +51,8 @@ const reducer = (state, action) => {
             return state;
 
     }
+
+    
 }
 
 

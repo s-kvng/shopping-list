@@ -28,9 +28,9 @@ function ListDetail() {
   present in the URL of the page*/
   useEffect(() => {
 
-    listId && fetchItems(listId);
+    listId && !items.length && fetchItems(listId);
 
-  }, [fetchItems ,listId ]);
+  }, [fetchItems, items ,listId ]);
 
 
 

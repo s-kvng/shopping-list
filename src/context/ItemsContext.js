@@ -29,6 +29,13 @@ const reducer = (state, action) => {
                 error: action.payload
             };
 
+        case 'ADD_ITEM_SUCCESS':
+            return {
+                ...state,
+                items: [...state.items, action.payload],
+                loading: false,
+            };
+
         default:
             return state;
     }
@@ -78,13 +85,58 @@ export const ItemsContextProvider = ({ children }) => {
     // const [ loading , error , data ] = useDataFetching('https://my-json-server.typicode.com/PacktPublishing/React-Projects-Second-Edition/items/')
 
 
+    const addItem = useCallback(async ({ listId, title, quantity, price }) => {
+
+        const itemId = Math.floor(Math.random() * 100);
+
+        try {
+
+            const data = await fetch(`https://my-json-server.typicode.com/PacktPublishing/React-Projects-Second-Edition/items`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: itemId,
+                        listId,
+                        title,
+                        quantity,
+                        price,
+                    }),
+
+                },);
+
+            const result = await data.json();
+
+            console.log(result);
+
+            if(result) {
+
+                dispatch({
+                    type: 'ADD_ITEM_SUCCESS',
+                    payload: {
+                        id: itemId,
+                        listId,
+                        title,
+                        quantity,
+                        price,
+                    }
+
+                });
+
+                console.log('logs' + title + price);
+            }
+
+
+        } catch { }
+    }, [])
+
+
     return (
 
         // <ItemsContext.Provider value={{ items, loading, error, fetchItems }} >
         //     {children}
         // </ItemsContext.Provider>
 
-        <ItemsContext.Provider value={{ ...state , fetchItems}} >
+        <ItemsContext.Provider value={{ ...state, fetchItems, addItem }} >
             {children}
         </ItemsContext.Provider>
     );
